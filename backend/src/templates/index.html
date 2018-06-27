@@ -1,3 +1,10 @@
-<h1>
-  <marquee> I'm going to work </marquee>
-</h1>
+{% extends "layout.html" %}
+{% block body %}
+  <h1>
+    <marquee> I'm going to work </marquee>
+  </h1>
+
+  {% if current_user.is_authenticated %}
+    <h2> Current user is {{ current_user.email }}</h2>
+  {% endif %}
+{% endblock %}

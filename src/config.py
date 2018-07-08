@@ -9,6 +9,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG=True
+    
     #Mongoengine Variables
     MONGODB_HOST='mongodb://admin:admin1@ds018238.mlab.com:18238/personal'
     MONGODB_DB='personal'

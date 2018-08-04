@@ -9,6 +9,7 @@ name = "pypi"
 flask = "*"
 flask-mongoengine = "*"
 flask-login = "*"
+pymongo = "==3.4.0"
 
 [requires]
 python_version = "3.7"

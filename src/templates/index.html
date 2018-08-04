@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
+{% block title %} Homepage {% endblock %}
+
 {% block body %}
   <h1>
-    <marquee> I'm going to work !</marquee>
+    <marquee><a href={{ url_for('main.register') }}> I'm working! </a></marquee>
   </h1>
 
   {% if current_user.is_authenticated %}

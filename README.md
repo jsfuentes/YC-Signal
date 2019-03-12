@@ -23,5 +23,4 @@ This is a python flask base to build off of. It contains the following:
 
 ### Optional changes
 #### Changing Database 
-Mongoengine is currently setup which enforces a schema on a document database. If you don't want a enforced schema, you do need to remove the references in config.py,  __init__.py, and the registration route in main/views.py.
-
+Mongoengine is currently setup which enforces a schema on a document database. If you don't want a enforced schema, you do need to remove the references in config.py, __init__.py, and the registration route in main/views.py.

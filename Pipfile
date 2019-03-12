@@ -9,9 +9,10 @@ name = "pypi"
 flask = "*"
 flask-mongoengine = "*"
 flask-login = "*"
-pymongo = "==3.4.0"
+pymongo = {extras = ["tls"],version = "*"}
 python-dotenv = "*"
 passlib = "*"
+dnspython = "*"
 
 [requires]
 python_version = "3.7"

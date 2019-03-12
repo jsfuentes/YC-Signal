@@ -26,3 +26,8 @@ def register():
         return redirect(url_for('main.index'))
 
     return render_template('register.html')
+    
+@main.route('/result', methods=['POST'])
+def result():
+    return request.form["test"]
+    

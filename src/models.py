@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 
-class User(UserMixin, Document):
+class Users(UserMixin, Document):
     email = EmailField(required=True)
     password_hash = StringField()
 
@@ -11,7 +11,7 @@ class User(UserMixin, Document):
     def password(self):
         raise AttributeError("password unreadable")
 
-    #can just set with User.password = password and it will be auto hashed
+    #can just set with user.password = password and it will be auto hashed
     @password.setter
     def password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -21,4 +21,4 @@ class User(UserMixin, Document):
 
     @login_manager.user_loader
     def load_user(uid):
-        return User.objects(id=uid).first()
+        return Users.objects(id=uid).first()

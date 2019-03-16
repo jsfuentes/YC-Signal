@@ -22,5 +22,8 @@ This is a python flask base to build off of. It contains the following:
 *Can also not shell and prefix any command with `pipenv run` i.e `pipenv run flask run``*
 
 ### Optional changes
-#### Changing Database 
-Mongoengine is currently setup which enforces a schema on a document database. If you don't want a enforced schema, you do need to remove the references in config.py, __init__.py, and the registration route in main/views.py.
+#### Using +srv mongo url 
+Uncomment two lines in config to enable ssl 
+
+#### Removing Schema 
+You must remove Mongoengine which enforces the schema on a document database. If you don't want a enforced schema, you need to change all the db accesses in user, delete models.py, and remove mongoengine in __init__.py

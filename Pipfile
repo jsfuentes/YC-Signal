@@ -17,6 +17,7 @@ google-cloud-speech = "*"
 pydub = "*"
 boto3 = "*"
 requests = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"

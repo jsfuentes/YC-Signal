@@ -3,10 +3,13 @@ import secrets
 import boto3
 from pydub import AudioSegment
 from io import BytesIO
+import os
 
 from ..models import Soundbites, Episodes
 soundbite = Blueprint('soundbite', __name__)
 s3 = boto3.client('s3')
+
+
 
 @soundbite.route('/data', methods = ['GET', 'POST'])
 def data():
@@ -27,20 +30,17 @@ def data():
     episode = Episodes.objects(id=form['episode']).first()
     
     #Create Clip
-    ea_stream = BytesIO()
-    s3.download_fileobj("yc-signal-episode-audio", episode.s3_audio_key, ea_stream)
-    episode_audio = AudioSegment.from_mp3(ea_stream)
+    s3.download_file("yc-signal-episode-audio", episode.s3_audio_key, "temp.mp3")
+    episode_audio = AudioSegment.from_mp3("temp.mp3")
+
     s = int(form['start_time'])
     e = int(form['end_time'])
-    print("EA:", len(episode_audio))
-    print(s, e)
-    soundbite_audio = episode_audio
-    print("SBA:", len(soundbite_audio))
+    soundbite_audio = episode_audio[s:e]
+    soundbite_audio.export("./temp2.mp3", format="mp3")
     length = len(soundbite_audio)
-    soundbite_audio = BytesIO(soundbite_audio.raw_data)
     
     key = secrets.token_hex(nbytes=16)
-    s3.upload_fileobj(soundbite_audio, 'yc-signal-soundbite-audio', key)
+    s3.upload_file('temp2.mp3', 'yc-signal-soundbite-audio', key)
     soundbite = Soundbites(title=form['title'], 
                         episode=form['episode'],
                         podcast=episode.podcast,

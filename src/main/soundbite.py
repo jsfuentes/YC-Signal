@@ -14,14 +14,20 @@ s3 = boto3.client('s3')
 @soundbite.route('/data', methods = ['GET', 'POST'])
 def data():
     if request.method == 'GET':
-        if 'id' not in request.args:
-            all_Soundbites = Soundbites.objects()
-            for soundbite in all_Soundbites:
+        if 'id' in request.args:
+            soundbite = Soundbites.objects(id=request.args['id']).first()
+            soundbite.presignAudio()
+            return jsonify(soundbite)
+        elif 'episode_id' in request.args:
+            episode_soundbite = Soundbites.objects(episode=request.args['episode_id'])
+            for soundbite in episode_soundbite:
                 soundbite.presignAudio()
-            return jsonify(all_Soundbites)
-        soundbite = Soundbites.objects(id=request.args['id']).first()
-        soundbite.presignAudio()
-        return jsonify(soundbite)
+            return jsonify(episode_soundbite)
+        else:
+            all_soundbites = Soundbites.objects()
+            for soundbite in all_soundbites:
+                soundbite.presignAudio()
+            return jsonify(all_soundbites)
 
     # f = request.files['audio']
     # key = secrets.token_hex(nbytes=16)

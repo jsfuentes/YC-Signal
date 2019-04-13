@@ -15,8 +15,8 @@ class DevelopmentConfig(Config):
     MONGODB_SETTINGS={
         'host': os.environ.get('MONGODB_HOST'), 
         #below two are needed if `+srv` in uri like for Mongo Atlas
-        # 'ssl': True, 
-        # 'ssl_cert_reqs': ssl.CERT_NONE
+        'ssl': True, 
+        'ssl_cert_reqs': ssl.CERT_NONE
     }
 
 config = {

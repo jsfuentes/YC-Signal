@@ -25,5 +25,5 @@ This is a python flask base to build off of. It contains the following:
 #### Using +srv mongo url 
 Uncomment two lines in config to enable ssl 
 
-#### Removing Schema 
+#### Removing Schema/Changing DBs 
 You must remove Mongoengine which enforces the schema on a document database. If you don't want a enforced schema, you need to change all the db accesses in user, delete models.py, and remove mongoengine in __init__.py

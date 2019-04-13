@@ -125,3 +125,6 @@ dmypy.json
 # My Additions
 .DS_STORE
 *~*
+*#*
+GoogleCloud*
+*.mp3*

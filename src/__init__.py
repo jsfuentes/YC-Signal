@@ -26,4 +26,7 @@ def create_app(config_name):
     from .main import user as user_blueprint
     app.register_blueprint(user_blueprint, url_prefix='/user')
 
+    from .main import soundbite as soundbite_blueprint
+    app.register_blueprint(soundbite_blueprint, url_prefix='/soundbite')
+
     return app

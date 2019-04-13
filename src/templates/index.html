@@ -7,6 +7,12 @@
     <marquee><a href={{ url_for('user.login') }}> Login </a></marquee>
   </h1>
 
+  <form action = "http://localhost:5000/soundbite/upload" method = "POST" 
+     enctype = "multipart/form-data">
+     <input type = "file" name = "file" />
+     <input type = "submit"/>
+  </form>
+
   {% if current_user.is_authenticated %}
     <h2> Current User is {{ current_user.email }}</h2>
     <marquee><a href={{ url_for('user.logout') }}> Logout </a></marquee>

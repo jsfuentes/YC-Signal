@@ -16,7 +16,7 @@ def data():
             for podcast in all_Podcasts:
                 podcast.presignPhoto()
             return jsonify(all_Podcasts)
-        podcast = Podcasts.objects(id=request.args['id'])
+        podcast = Podcasts.objects(id=request.args['id']).first()
         podcast.presignPhoto()
         return jsonify(podcast)
 

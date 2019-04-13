@@ -71,6 +71,7 @@ class Soundbites(Document):
     podcast = ReferenceField('Podcasts')
     length = StringField()
     s3_audio_key = StringField()
+    s3_audio_url = StringField()
     
     def presignAudio(self):
         if self.s3_audio_key:

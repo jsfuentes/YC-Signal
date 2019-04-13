@@ -1,15 +1,11 @@
 from flask import abort, Blueprint, jsonify, render_template, request, redirect, send_file, url_for
+import secrets 
+import boto3
 
 from ..models import Episodes
-episode = Blueprint('episode', __name__)
 
-@episode.route('/audio')
-def audio():
-    if 'id' not in request.args:
-        abort(400)
-    
-    path = episodePath(request.args['id'], True)
-    return send_file(path)
+episode = Blueprint('episode', __name__)
+s3 = boto3.client('s3')
     
 @episode.route('/data', methods = ['GET', 'POST'])
 def data():
@@ -19,18 +15,16 @@ def data():
             for episode in all_Episodes:
                 episode.presignAudio()
             return jsonify(all_Episodes)
-        episode = Episodes.objects(id=request.args['id'])
+        episode = Episodes.objects(id=request.args['id']).first()
         episode.presignAudio()
         return jsonify(episode)
         
-        
     f = request.files['audio']
-    form = request.forms
+    form = request.form
     key = secrets.token_hex(nbytes=16)
     episode = Episodes(title=form['title'], 
-                        podcast=form['podcast_id'], 
-                        description=form.get('description', null),
-                        key = key)
+                        podcast=form['podcast'], 
+                        s3_audio_key = key)
     s3.upload_fileobj(f, 'yc-signal-episode-audio', key)
     episode.presignAudio()
     episode.save()

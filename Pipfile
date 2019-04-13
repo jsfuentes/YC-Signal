@@ -16,6 +16,7 @@ dnspython = "*"
 google-cloud-speech = "*"
 pydub = "*"
 boto3 = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

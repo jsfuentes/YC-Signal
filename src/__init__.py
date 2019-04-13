@@ -31,5 +31,8 @@ def create_app(config_name):
     
     from .main import podcast as podcast_blueprint
     app.register_blueprint(podcast_blueprint, url_prefix='/podcast')
+    
+    from .main import episode as episode_blueprint
+    app.register_blueprint(episode_blueprint, url_prefix='/episode')
 
     return app

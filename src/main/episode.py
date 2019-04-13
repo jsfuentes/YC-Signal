@@ -1,39 +1,42 @@
 from flask import abort, Blueprint, jsonify, render_template, request, redirect, send_file, url_for
 
-from ..models import Soundbites
-soundbite = Blueprint('soundbite', __name__)
+from ..models import Episodes
+episode = Blueprint('episode', __name__)
 
-# @soundbite.route('/audio')
-# def audio():
-#     if 'id' not in request.args:
-#         abort(400)
-# 
-#     return send_file(path)
+@episode.route('/audio')
+def audio():
+    if 'id' not in request.args:
+        abort(400)
     
-@soundbite.route('/data', methods = ['GET', 'POST'])
+    path = episodePath(request.args['id'], True)
+    return send_file(path)
+    
+@episode.route('/data', methods = ['GET', 'POST'])
 def data():
     if request.method == 'GET':
         if 'id' not in request.args:
-            all_Soundbites = Soundbites.objects()
-            return jsonify(all_Soundbites)
-        soundbite = Soundbites.objects(id=request.args['id'])
-        return jsonify(soundbite)
+            all_Episodes = Episodes.objects()
+            for episode in all_Episodes:
+                episode.presignAudio()
+            return jsonify(all_Episodes)
+        episode = Episodes.objects(id=request.args['id'])
+        episode.presignAudio()
+        return jsonify(episode)
         
-
-    f = request.files['photo']
+        
+    f = request.files['audio']
+    form = request.forms
     key = secrets.token_hex(nbytes=16)
-    s3.upload_fileobj(f, 'yc-signal-soundbite-audio', key)
-    print(request.form)
-    form = request.form
-    soundbite = Soundbites(title=form['title'], 
-                        host=form['host'], 
-                        description=form['description'],
-                        s3_photo_key=key)
-    soundbite.save()
-    return jsonify(soundbite)
+    episode = Episodes(title=form['title'], 
+                        podcast=form['podcast_id'], 
+                        description=form.get('description', null),
+                        key = key)
+    s3.upload_fileobj(f, 'yc-signal-episode-audio', key)
+    episode.presignAudio()
+    episode.save()
+    return jsonify(episode)
 
-
-@soundbite.route('/suggest')
+@episode.route('/suggest')
 def suggest():
     print("Suggesting", request.args)
     if 'id' not in request.args:

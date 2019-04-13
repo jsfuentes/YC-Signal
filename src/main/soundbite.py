@@ -13,6 +13,6 @@ def upload():
     f = request.files['podcast']
     f.save(secure_filename(f.filename))
     return 'file uploaded successfully'
-    
-@soundbite.route('/text', methods = ['GET'])
-def 
+# 
+# @soundbite.route('/text', methods = ['GET'])
+# def 

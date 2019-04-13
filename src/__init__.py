@@ -28,5 +28,8 @@ def create_app(config_name):
 
     from .main import soundbite as soundbite_blueprint
     app.register_blueprint(soundbite_blueprint, url_prefix='/soundbite')
+    
+    from .main import podcast as podcast_blueprint
+    app.register_blueprint(podcast_blueprint, url_prefix='/podcast')
 
     return app

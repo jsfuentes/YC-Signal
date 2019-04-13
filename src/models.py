@@ -1,4 +1,4 @@
-from mongoengine import Document, EmailField, StringField
+from mongoengine import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
@@ -22,3 +22,23 @@ class Users(UserMixin, Document):
     @login_manager.user_loader
     def load_user(uid):
         return Users.objects(id=uid).first()
+
+class Podcasts(Document):
+    title = StringField()
+    host = StringField()
+    description = StringField()
+    photo = FileField()
+    # link = StringField()
+
+class Episodes(Document):
+    title = StringField()
+    podcast = ReferenceField('Podcasts')
+    
+class Soundbites(Document):
+    title = StringField()
+    episode = ReferenceField('Episode')
+    podcast = ReferenceField('Podcasts')
+    length = StringField()
+    # link = StringField()
+    
+    

@@ -67,9 +67,9 @@ class Episodes(Document):
     
 class Soundbites(Document):
     title = StringField()
-    episode = ReferenceField('Episode')
+    episode = ReferenceField('Episodes')
     podcast = ReferenceField('Podcasts')
-    length = StringField()
+    length = IntField()
     s3_audio_key = StringField()
     s3_audio_url = StringField()
     

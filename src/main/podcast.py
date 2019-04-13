@@ -1,14 +1,19 @@
-from flask import abort, Blueprint, jsonify, render_template, request, redirect, url_for
-from werkzeug import secure_filename
-import os
+from flask import abort, Blueprint, jsonify, render_template, request, redirect, send_file, url_for
 
 from ..models import Podcasts
-
+from ..utils import podcastPath
 podcast = Blueprint('podcast', __name__)
-podcast_path = "./podcasts"
 
+@podcast.route('/audio')
+def audio():
+    if 'id' not in request.args:
+        abort(400)
+    
+    path = podcastPath(request.args['id'], True)
+    return send_file(path)
+    
 @podcast.route('/data', methods = ['GET', 'POST'])
-def index():
+def data():
     if request.method == 'GET':
         if 'id' not in request.args:
             all_Podcasts = Podcasts.objects()
@@ -25,13 +30,14 @@ def index():
                         host=form['host'], 
                         description=form['description'])
     podcast.save()
-    path = os.path.join(podcast_path, secure_filename(str(podcast.id) + ".mp3"))
+    path = podcastPath(podcast.id)
     print(f"Saved to {path}")
     f.save(path)
-    return 'file uploaded successfully'
+    return jsonify({"id": str(podcast.id)})
 
-@podcast.route('/suggestions')
-def suggestions():
+@podcast.route('/suggest')
+def suggest():
+    print("Suggesting", request.args)
     if 'id' not in request.args:
         abort(400)
     dummy_data = {'suggestions': 
